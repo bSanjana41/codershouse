@@ -1,0 +1,16 @@
+.cardWrapper {
+ composes: cardWrapper from '../../../App.module.css';   
+}
+.bottomParagraph {
+    font-size: 14px;
+    color: #c4c5c5;
+    text-align: center;
+    margin-top: 20px;
+}
+.actionButtonWrap {
+    margin-top: 40px;
+}
+.inputWrap{
+    margin-top: 20px;
+    gap: 20px;
+}
