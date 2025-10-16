@@ -3,7 +3,7 @@ import './App.css'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import Navigation from './components/shared/navigation/navigation'
-import Authenticate from './pages/Authenticate/Authenticate'
+import Authenticate from './pages/Authenticate/Authenticateredux'
 import Activate from './pages/Activate/Activate'
 import Rooms from './pages/Rooms/Rooms'
 

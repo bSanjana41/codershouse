@@ -13,9 +13,9 @@ const StepPhoneEmail = ({ onNext }) => {
   const [type, setType] = useState("phone");
   const Component = phoneEmailMap[type];
 
-    const handleNextFromChild = (value) => {
-    onNext({ type, value }); 
-  };
+  //   const handleNextFromChild = (value) => {
+  //   onNext({ type, value }); 
+  // };
 
   return (
     <>
@@ -30,7 +30,8 @@ const StepPhoneEmail = ({ onNext }) => {
             <button className={`${styles.tabButton} ${type==="email"?styles.active:""}`} onClick={() => setType("email")}><MyEmoji symbol="✉︎" label="letter2" /></button>
           </div>
           <div>
-          <Component  onNext={handleNextFromChild} />
+          {/* <Component  onNext={handleNextFromChild} /> */}
+          <Component/>
        </div>
         </div>
       </div>
