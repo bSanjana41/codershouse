@@ -5,15 +5,18 @@ import { Link } from 'react-router-dom'
 import Card from '../../components/shared/Card/Card'
 import Button from '../../components/shared/Button/Button'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { resetAuth } from '../../store/authSlice'
 
 
 const Home = () => {
   
   const navigate = useNavigate();
-
+const dispatch=useDispatch()
   
   const startRegister = () => {
-navigate("/authenticate");
+dispatch(resetAuth())
+    navigate("/authenticate");
   }
   return (
     <div className={styles.cardWrapper}>

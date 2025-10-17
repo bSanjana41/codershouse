@@ -9,7 +9,7 @@ const phoneEmailMap = {
   email: Email
 }
 
-const StepPhoneEmail = ({ onNext }) => {
+const StepPhoneEmail = () => {
   const [type, setType] = useState("phone");
   const Component = phoneEmailMap[type];
 

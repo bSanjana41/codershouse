@@ -12,7 +12,7 @@ const Authenticate = () => {
 
   return (
     <div>
-<Step phone={phone} email={email}  />
+<Step />
     </div>
   );
 };
