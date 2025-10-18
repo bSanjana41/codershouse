@@ -76,7 +76,7 @@ class AuthController {
       });
 
       const UserDto = new userDto(user)
-      res.json({ accessToken, message: "OTP verified successfully", user: UserDto });
+      res.json({ accessToken, message: "OTP verified successfully", user: UserDto,auth:true });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Server error" });
