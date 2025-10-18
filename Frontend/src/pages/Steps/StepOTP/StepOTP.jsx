@@ -20,7 +20,7 @@ const StepOTP = () => {
             const {data}=await verifyOtp(payload)
             dispatch(setOTP(otpInput));
             dispatch(setAuth({user:data.user}))
-            // dispatch(nextStep())
+            dispatch(nextStep())
         } catch (err) {
                 console.error("❌ Error verifying OTP:", err.response?.data || err.message);
 

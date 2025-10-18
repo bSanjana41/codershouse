@@ -55,8 +55,8 @@ class AuthController {
       const isValid = await hashService.verifyOtp(user.otp, otp);
       if (!isValid) return res.status(400).json({ message: "Invalid phone or OTP" });
 
-      // Activate user & clear OTP fields
-      user.activated = true;
+      // authenticate user & clear OTP fields
+      user.activated = false;
       user.otp = undefined;
       user.otpExpires = undefined;
       await user.save();
