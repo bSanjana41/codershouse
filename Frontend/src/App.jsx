@@ -6,13 +6,13 @@ import Navigation from './components/shared/navigation/navigation'
 import Authenticate from './pages/Authenticate/Authenticateredux'
 import Activate from './pages/Activate/Activate'
 import Rooms from './pages/Rooms/Rooms'
-
-const isAuthenticated = () => {
-  return false
-}
-const currentUser = {
-  activated: false
-}
+import { useSelector } from 'react-redux'
+// const isAuthenticated = () => {
+//   return false
+// }
+// const currentUser = {
+//   activated: false
+// }
 function App() {
   return (
     <>
@@ -31,14 +31,14 @@ function App() {
           </Route>
 
           {/* semiprotectedroutes */}
-          <Route path='/activate' element={<SemiProtectedRoute user={currentUser}>
+          <Route path='/activate' element={<SemiProtectedRoute >
             <Activate />
           </SemiProtectedRoute>
           }>
           </Route>
 
           {/* protected routes */}
-          <Route path='/rooms' element={<ProtectedRoute user={currentUser}>
+          <Route path='/rooms' element={<ProtectedRoute>
             <Rooms/>
           </ProtectedRoute>}>
           </Route>
@@ -51,21 +51,26 @@ function App() {
 }
 
 const GuestRoute = ({ children }) => {
-  if (!isAuthenticated()) return children;
-  if (isAuthenticated() && !currentUser.activated)
+  const {isAuth,user}=useSelector((state)=>state.auth)
+  if (!isAuth) return children;
+  if (isAuth && !user.activated)
     return <Navigate to="/activate" replace />;
   return <Navigate to="/rooms" replace />;
 };
 
-const SemiProtectedRoute = ({ children, user }) => {
-  if (!isAuthenticated()) return <Navigate to="/authenticate" replace />;
-  if (isAuthenticated() && !user?.activated) return children;
+const SemiProtectedRoute = ({ children }) => {
+    const {isAuth,user}=useSelector((state)=>state.auth)
+
+  if (!isAuth) return <Navigate to="/authenticate" replace />;
+  if (isAuth && !user?.activated) return children;
   return <Navigate to="/rooms" replace />;
 };
 
-const ProtectedRoute = ({ children, user }) => {
-  if (!isAuthenticated()) return <Navigate to="/authenticate" replace />;
-  if (isAuthenticated() && !user?.activated) return <Navigate to="/activate" replace />;
+const ProtectedRoute = ({ children}) => {
+    const {isAuth,user}=useSelector((state)=>state.auth)
+
+  if (!isAuth) return <Navigate to="/authenticate" replace />;
+  if (isAuth && !user?.activated) return <Navigate to="/activate" replace />;
   return children;
 }
 

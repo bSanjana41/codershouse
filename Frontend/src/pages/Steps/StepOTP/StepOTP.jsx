@@ -4,22 +4,27 @@ import Textinput from '../../../components/shared/Textinput/Textinput';
 import Button from '../../../components/shared/Button/Button';
 import styles from './StepOTP.module.css'
 import { verifyOtp } from '../../../http';
-import { nextStep, setOTP } from "../../../store/authSlice.js"
+import { nextStep, setOTP ,setAuth} from "../../../store/authSlice.js"
 import { useDispatch,useSelector } from 'react-redux';
 
 
 const StepOTP = () => {
     const [otpInput, setOtpInput] = useState("");
     const dispatch = useDispatch()
-    const { phone, email } = useSelector((state) => state.auth);
+    const { phone, email ,isAuth} = useSelector((state) => state.auth);
 
 
     const submitHandler = async () => {
-        const payload = phone ? { phone, otp: otpInput } : { email, otp: otpInput };
-        await verifyOtp(payload)
-        dispatch(setOTP(otpInput));
+        try {
+            const payload = phone ? { phone, otp: otpInput } : { email, otp: otpInput };
+            const {data}=await verifyOtp(payload)
+            dispatch(setOTP(otpInput));
+            dispatch(setAuth({user:data.user}))
+            // dispatch(nextStep())
+        } catch (err) {
+                console.error("❌ Error verifying OTP:", err.response?.data || err.message);
 
-        dispatch(nextStep())
+        }
     }
 
     const handleOTPChange = (e) => {

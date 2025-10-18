@@ -3,6 +3,7 @@ import otpService from "../services/otp-service.js";
 import hashService from "../services/hash-service.js";
 import userService from "../services/user-service.js";
 import tokenService from "../services/token_service.js";
+import userDto from "../dto/user-dto.js";
 
 class AuthController {
   // Send OTP
@@ -17,7 +18,7 @@ class AuthController {
       const otpExpires = Date.now() + 2 * 60 * 1000; // 2 minutes
 
       // Send OTP via SMS
-    //   await otpService.sendBySms(phone, otp);
+      //   await otpService.sendBySms(phone, otp);
 
       // Save OTP & expiry in user document
       let user = await userService.findUser({ phone });
@@ -29,7 +30,7 @@ class AuthController {
         await user.save();
       }
 
-      return res.json({ message: "OTP sent successfully", phone,otp });
+      return res.json({ message: "OTP sent successfully", phone, otp });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Failed to send OTP" });
@@ -61,13 +62,21 @@ class AuthController {
       await user.save();
 
       // Generate JWT tokens
-      const { accessToken, refreshToken } = tokenService.generateToken({ _id: user._id, activated: true });
+      const { accessToken, refreshToken } = tokenService.generateToken({
+        _id: user._id, activated: true
+      });
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
+      await tokenService.storeRefreshToken(refreshToken, user._id)
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
 
-      res.json({ accessToken, message: "OTP verified successfully" });
+      const UserDto = new userDto(user)
+      res.json({ accessToken, message: "OTP verified successfully", user: UserDto });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Server error" });

@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   step: 1,
+  user:null,
   phone: "",
   email: "",
   otp: "",
-  isAuthenticated: false
+  isAuth: false
+
 };
 
 const authSlice = createSlice({
@@ -21,10 +23,15 @@ const authSlice = createSlice({
       state.phone = "";
       state.email = "";
       state.otp = "";
-      state.isAuthenticated = false
+      state.isAuth = false
+    },
+    setAuth:(state,action)=>{
+const {user}=action.payload;
+state.user=user;
+state.isAuth=true
     }
   }
 });
 
-export const { setPhone, setEmail, setOTP, nextStep, resetAuth } = authSlice.actions;
+export const { setPhone, setEmail, setOTP, nextStep, resetAuth ,setAuth} = authSlice.actions;
 export default authSlice.reducer;
