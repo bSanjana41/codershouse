@@ -6,6 +6,7 @@ const steps = {
   1: StepName,
   2: StepAvatar
 }
+
 const Activate = () => {
   const { step } = useSelector((state) => state.activate);
 

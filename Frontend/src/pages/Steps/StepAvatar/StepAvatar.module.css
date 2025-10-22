@@ -1,0 +1,48 @@
+.cardWrapper {
+    composes: cardWrapper from '../../../App.module.css';
+}
+
+.bottomParagraph {
+    font-size: 14px;
+    color: #c4c5c5;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.actionButtonWrap {
+    margin-top: 40px;
+}
+
+.inputWrap {
+    margin-top: 20px;
+    display: flex;
+    /* make it a flex container */
+    justify-content: center;
+    /* horizontal centering */
+    align-items: center;
+    /* vertical centering */
+    flex-direction: column;
+    /* stack children vertically */
+    border: 40px;
+}
+
+.label {
+    display: flex;
+    flex-direction: row; /* stack text + select vertically */
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px; /* space between label text and select */
+}
+
+.skipText {
+    margin-top: 20px; 
+}
+.avatarBorder {
+    border: 5px solid #007bff;
+    border-radius: 50%;
+}
+.avatarInput{
+display: block;
+margin:20px auto 0;
+width: 80px;
+}
