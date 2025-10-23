@@ -12,30 +12,43 @@ const StepAvatar = () => {
   const { username, gender } = useSelector((state) => state.activate)
   const [avatarConfig, setAvatarConfig] = useState(null)
   const [selectedGender, setSelectedGender] = useState(gender || '')
+  const [avatarImage, setAvatarImage] = useState(null)
+
+
   const dispatch = useDispatch()
 
   // Generate avatar when username or gender changes
   useEffect(() => {
-    if (username && selectedGender) {
+  if (username && selectedGender && avatarImage === null) {
       const config = getAvatar(username, selectedGender)
       setAvatarConfig(config)
       dispatch(setAvatar(config))
       dispatch(setGender(selectedGender))
     }
-  }, [username, selectedGender])
+  }, [username, selectedGender,avatarImage])
 
   // Generate a new random avatar
   const generateRandomAvatar = () => {
     if (!username || !selectedGender) return
+  setAvatarImage(null);
     const randomNum = Math.floor(Math.random() * 1000);
     const newAvatar = getAvatar(username, selectedGender, randomNum);
-
     setAvatarConfig(newAvatar)
     dispatch(setAvatar(newAvatar))
   }
+  const captureImage = (e) => {
+const file = e.target.files[0]
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => {
+      setAvatarConfig(null)
+      setAvatarImage(reader.result)
+      dispatch(setAvatar(reader.result))
+    }
+  }
 
   const submitHandler = () => {
-    if (!avatarConfig) return
+  if (!avatarConfig && !avatarImage) return
     dispatch(nextStep())
   }
 
@@ -45,7 +58,17 @@ const StepAvatar = () => {
 
         {/* Avatar Preview */}
         <div className={styles.inputWrap}>
-          {avatarConfig ? (
+          {avatarImage ? (
+            <div className={styles.avatarBorder}>
+              <img
+                src={avatarImage}
+                alt="Uploaded Avatar"
+                className={styles.uploadedAvatar}
+                width={100}
+                height={100}
+              />
+            </div>
+          ) : avatarConfig ? (
             <div className={styles.avatarBorder}>
               <Avatar style={{ width: 100, height: 100 }} {...avatarConfig} />
             </div>
@@ -70,13 +93,15 @@ const StepAvatar = () => {
         </div>
 
         {/* Try another avatar */}
-        {avatarConfig && (
+{(avatarConfig || avatarImage) && (
           <Button className={styles.skipText} title="🔄 Try another avatar"
             onClick={generateRandomAvatar}>
           </Button>
         )}
-        <div><input id='avatarInput' type='file' className={styles.avatarInput} />
-          <label htmlFor='avatarInput'>Upload your avatar</label>
+        <div><input
+          onChange={captureImage}
+          id='avatarInput' type='file' className={styles.avatarInput} />
+          <label className={styles.avatarLabel} htmlFor='avatarInput'>Upload your avatar</label>
         </div>
         {/* Next Button */}
         <div className={styles.actionButtonWrap}>
